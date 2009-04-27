@@ -1,0 +1,4 @@
+Contains the primitives and utilities used to rate-limit Java applications. 
+
+Inspired by reading Cal Henderson's "Building Scalable Web Sites" which talks briefly about this, and having been on the receiving end of a kicking from search engines, I wanted to have a simple way of determining whether to bother processing requests and stop consuming server resources in a graceful way, rather than grinding to a halt.
+
