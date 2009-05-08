@@ -16,22 +16,26 @@
 package com.eternus.ratelimit;
 
 /**
- * Interface defining how clients can check to see whether they should proceed before doing a request.
+ * Interface defining whether a service can be enabled or not.
  * 
  * @author jabley
- * 
+ *
  */
-public interface RateLimiter extends Enablable {
+public interface Enablable {
 
     /**
-     * Method called by clients to check whether they should service the current request or not. Returns a non-null
-     * {@link Token} which clients can then call {@link Token#isUsable()} to determine whether to proceed or not.
+     * Returns true if this service is enabled, otherwise false.
      * 
-     * @param key
-     *            the {@link Key}, which should have a good implementation of {@link #equals(Object)} and
-     *            {@link #hashCode()} to ensure that types of request can be differentiated.
-     * @return a non-null {@link Token}
+     * @return true if this service is enabled, otherwise false
      */
-    Token getToken(Key key);
+    boolean isEnabled();
+
+    /**
+     * Sets the enabled state of this service.
+     * 
+     * @param enabled
+     *            the enabled state
+     */
+    void setEnabled(boolean enabled);
 
 }

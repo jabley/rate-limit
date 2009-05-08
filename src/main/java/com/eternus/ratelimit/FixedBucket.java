@@ -114,4 +114,13 @@ public class FixedBucket implements RateLimiter {
         return enabled;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    
+    
+
 }
