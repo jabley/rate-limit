@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="rate-limit" default="package">
+  <description>Rate-Limit - Java API for rate-limiting and circuit breakers.</description>
+  <property name="skip.docs" value="true" />
+  <import file="ant/bootstrap.xml" />
+</project>
