@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author jabley
  * 
  */
-class CircuitBreakerImpl implements CircuitBreaker {
+public class CircuitBreakerImpl implements CircuitBreaker {
 
     /**
      * The positive number of failed attempts allowed before this {@link CircuitBreaker} will trip.
