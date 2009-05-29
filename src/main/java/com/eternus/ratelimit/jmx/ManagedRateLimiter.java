@@ -76,7 +76,6 @@ public class ManagedRateLimiter extends NotificationBroadcasterSupport implement
     /**
      * {@inheritDoc}
      */
-    @Override
     public Token getToken(Key key) {
         Token token = delegate.getToken(key);
 

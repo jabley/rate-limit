@@ -44,6 +44,7 @@ public class TestFixedBucketWithEhcache extends FixedBucketTests {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected TokenStore createTokenStore() {
         EhcacheTokenStore tokenStore = new EhcacheTokenStore();
         tokenStore.setCache(this.cache);

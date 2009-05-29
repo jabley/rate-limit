@@ -1,0 +1,8 @@
+bin
+TEST-*
+.classpath
+.project
+dist
+ivy/ivy.jar
+target
+

@@ -55,7 +55,6 @@ public class EhcacheTokenStore implements TokenStore {
     /**
      * {@inheritDoc}
      */
-    @Override
     public StoreEntry create(Key key, int timeToLive) {
         StoreEntryImpl result = new StoreEntryImpl(timeToLive);
         Element element = new Element(key, result);
@@ -67,7 +66,6 @@ public class EhcacheTokenStore implements TokenStore {
     /**
      * {@inheritDoc}
      */
-    @Override
     public StoreEntry get(Key key) {
 
         Element entry = null;

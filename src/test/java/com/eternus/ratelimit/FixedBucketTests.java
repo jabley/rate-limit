@@ -76,14 +76,14 @@ public abstract class FixedBucketTests {
     @Test
     public void multipleClientsCanAccessWithoutBlocking() throws Exception {
         final FixedBucket rateLimiter = new FixedBucket();
-        int allowedRequests = 100;
+        int allowedRequests = 200;
         rateLimiter.setAllowedRequests(allowedRequests);
         rateLimiter.setTokenStore(createTokenStore());
         rateLimiter.init();
 
         final RateLimiterKey key = new RateLimiterKey();
 
-        int clientCount = 10;
+        int clientCount = allowedRequests;
         Runnable[] clients = new Runnable[clientCount];
         final boolean[] isUsable = new boolean[clientCount];
 

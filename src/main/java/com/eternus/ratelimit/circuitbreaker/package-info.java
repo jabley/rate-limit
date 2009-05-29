@@ -13,17 +13,9 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-package com.eternus.ratelimit;
+/**
+ * Contains the classes, interfaces and enums used to create a CircuitBreaker around potentially problematic 
+ * Integration Points. See Michael T Nygard's Release It! 
+ */
+package com.eternus.ratelimit.circuitbreaker;
 
-
-public class TestFixedBucketWithMemoryStore extends FixedBucketTests {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TokenStore createTokenStore() {
-        return new MemoryTokenStore();
-    }
-
-}

@@ -84,7 +84,7 @@ public class FixedBucket implements RateLimiter {
 
             if (entry == null) {
 
-                /* Populate the entry, thus unlocking the underlying mutex */
+                /* Populate the entry, thus unlocking any underlying mutex */
                 entry = cache.create(key, timeToLive);
             }
 
@@ -101,7 +101,6 @@ public class FixedBucket implements RateLimiter {
 
     /**
      * Initializes the {@link FixedBucket} for use.
-     * 
      */
     public void init() {
 
@@ -121,6 +120,10 @@ public class FixedBucket implements RateLimiter {
         this.enabled = enabled;
     }
     
-    
+    public void setDuration(int durationInSeconds) {
+        if (durationInSeconds > 0) {
+            this.timeToLive = durationInSeconds;
+        }
+    }
 
 }
