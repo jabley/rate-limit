@@ -15,7 +15,6 @@
  */
 package com.eternus.ratelimit.jmx;
 
-import com.eternus.ratelimit.Enablable;
 import com.eternus.ratelimit.RateLimiter;
 
 /**
@@ -24,6 +23,6 @@ import com.eternus.ratelimit.RateLimiter;
  * @author jabley
  *
  */
-public interface ManagedRateLimiterMBean extends Enablable {
+public interface ManagedRateLimiterMBean extends RateLimiter {
         
 }

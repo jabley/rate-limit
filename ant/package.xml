@@ -18,6 +18,12 @@
 		</jar>
 	</target>
 
+	<target name="make-source-jar" unless="ivy.extra.jarclassname" depends="pack-deps">
+		<jar destfile="${dist.dir}/${ivy.module}-sources-${ivy.revision}.jar">
+			<fileset dir="${source.dir}/java" />
+		</jar>
+	</target>
+
 	<!-- generate a jar that contains all deps inside it, so it can be run with "java -jar" -->
 	<target name="make-executable-jar" if="ivy.extra.jarclassname" depends="copy-extra,pack-deps">
 		<pathconvert refid="deps.path" pathsep=" " property="deps.path.jar-format">
@@ -61,7 +67,7 @@
 	</target>
 
 	<target name="package" depends="test, make-non-executable-jar, make-executable-jar,
-    generate-scripts, docs" description="build complete jar(s) and docs">
+    make-source-jar, generate-scripts, docs" description="build complete jar(s) and docs">
 		<ivy:makepom ivyfile="${basedir}/ivy/ivy.xml" pomfile="${dist.dir}/${dist.name}.pom" />
 		<ivy:deliver conf="*(public)" />
 		<condition property="dist.zip.name" value="namesearch-${revision-short}.zip">

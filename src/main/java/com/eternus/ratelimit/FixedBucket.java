@@ -64,6 +64,13 @@ public class FixedBucket implements RateLimiter {
     /**
      * {@inheritDoc}
      */
+    public int getAllowedRequests() {
+        return this.allowedRequests;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setAllowedRequests(int allowedRequests) {
         if (allowedRequests > 0) {
             this.allowedRequests = allowedRequests;
@@ -119,11 +126,21 @@ public class FixedBucket implements RateLimiter {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void setDuration(int durationInSeconds) {
         if (durationInSeconds > 0) {
             this.timeToLive = durationInSeconds;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getDuration() {
+        return this.timeToLive;
     }
 
 }

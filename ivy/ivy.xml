@@ -1,9 +1,13 @@
 <ivy-module version="2.0">
-  <info organisation="com.eternus" module="ratelimit" revision="1.0-SNAPSHOT" />
+  <info organisation="com.eternus" module="ratelimit" revision="1.0" />
   <configurations>
     <conf name="default" description="normal build" />
     <conf name="test" visibility="private" description="build and run tests" />
   </configurations>
+  <publications>
+    <artifact />
+    <artifact name="ratelimit-sources" />
+  </publications>
   <dependencies>
     <dependency org="junit" name="junit" rev="4.5" conf="test->*"/>
     <dependency org="net.sf.ehcache" name="ehcache" rev="1.5.0" conf="default->*;test->default">

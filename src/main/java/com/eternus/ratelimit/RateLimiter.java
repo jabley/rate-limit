@@ -34,4 +34,31 @@ public interface RateLimiter extends Enablable {
      */
     Token getToken(Key key);
 
+    /**
+     * Returns the positive number of allowed requests per service slot duration.
+     * 
+     * @return the allowed requests value
+     */
+    public int getAllowedRequests();
+
+    /**
+     * Sets the positive number of allowed requests per service slot duration.
+     */
+    public void setAllowedRequests(int allowedRequests);
+
+    /**
+     * Returns the duration for each service slot in seconds.
+     * 
+     * @param durationInSeconds
+     *            the positive duration
+     */
+    public void setDuration(int durationInSeconds);
+
+    /**
+     * Returns the duration in seconds for each service slot.
+     * 
+     * @return the positive number of seconds
+     */
+    public int getDuration();
+
 }

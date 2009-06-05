@@ -25,12 +25,12 @@ import com.eternus.ratelimit.RateLimiter;
 import com.eternus.ratelimit.Token;
 
 /**
- * JMX MBean which will send out notifications around a {@link RateLimiter} implementation.
+ * JMX MBean which will send out notifications around a decorated {@link RateLimiter} implementation.
  * 
  * @author jabley
  * 
  */
-public class ManagedRateLimiter extends NotificationBroadcasterSupport implements RateLimiter, ManagedRateLimiterMBean {
+public class ManagedRateLimiter extends NotificationBroadcasterSupport implements ManagedRateLimiterMBean {
 
     /**
      * The name of the JXM notification that will be sent for successfully serviced requests.
@@ -102,6 +102,34 @@ public class ManagedRateLimiter extends NotificationBroadcasterSupport implement
      */
     public void setEnabled(boolean enabled) {
         this.delegate.setEnabled(enabled);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getAllowedRequests() {
+        return delegate.getAllowedRequests();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getDuration() {
+        return delegate.getDuration();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setAllowedRequests(int allowedRequests) {
+        delegate.setAllowedRequests(allowedRequests);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDuration(int durationInSeconds) {
+        delegate.setDuration(durationInSeconds);
     }
 
     /**
