@@ -1,5 +1,5 @@
 <ivy-module version="2.0">
-  <info organisation="com.eternus" module="ratelimit" revision="1.0" />
+  <info organisation="com.eternus" module="ratelimit" revision="1.2-SNAPSHOT" />
   <configurations>
     <conf name="default" description="normal build" />
     <conf name="test" visibility="private" description="build and run tests" />

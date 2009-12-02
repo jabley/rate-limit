@@ -35,11 +35,6 @@ public class MemoryTokenStore implements TokenStore {
     private final Map<Key, StoreEntry> cache;
 
     /**
-     * The {@link ReadWriteLock} used to protect the cache.
-     */
-    private final ReadWriteLock lock;
-
-    /**
      * The {@link Lock} used to guard reads.
      */
     private final Lock r;
@@ -54,7 +49,7 @@ public class MemoryTokenStore implements TokenStore {
      */
     public MemoryTokenStore() {
         this.cache = new HashMap<Key, StoreEntry>();
-        this.lock = new ReentrantReadWriteLock();
+        ReadWriteLock lock = new ReentrantReadWriteLock();
         this.r = lock.readLock();
         this.w = lock.writeLock();
     }
