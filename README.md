@@ -1,22 +1,18 @@
-Overview
-========
+# Overview
 
 Contains the primitives and utilities used to rate-limit / throttle Java 
-applications.
+applications, and a CircuitBreaker implementation.
 
-Summary
-=======
+# Summary
 Inspired by reading Cal Henderson's "Building Scalable Web Sites" which talks 
 briefly about this, and having been on the receiving end of a kicking from 
 search engines, I wanted to have a simple way of determining whether to bother
 processing requests and stop consuming server resources in a graceful way, 
 rather than grinding to a halt.
 
-Background - types of throttling
-================================
+## Background - types of throttling
 
-1. Next Service Slot
-====================
+### Next Service Slot
 
 Each time a request comes in, we log the time. If it hasn't been a certain 
 duration since the last request, then abort with a rate-limiting error.
@@ -36,8 +32,7 @@ gate.put_entry(key, entry)
 
 ...
 
-2. Fixed Bucket
-===============
+### Fixed Bucket
 
 We define a duration and an acceptable number of requests to be serviced in 
 that time. Each time a request comes in, we look up the number of calls made 
@@ -60,8 +55,7 @@ entry.count.increment()
 From this description, it can be seen that Next Service Slot is essentially 
 Fixed Bucket with a max size of 1 and an appropriate service period.
 
-3. Leaky Bucket
-===============
+### Leaky Bucket
 
 Similar to a Fixed Bucket, except that rather than aborting, we block until 
 the end of the current time period upon which the bucket counter is 
@@ -83,8 +77,11 @@ entry.count.increment()
 
 ...
 
-Future Plans
-============
+## CircuitBreaker
+
 There is some overlap in the intention of this library with the Circuit Breaker 
-approach described by Michael Nygard in his excellent book "Release It!"; I would
-like to do some work to address that as well.
+approach described by Michael Nygard in his excellent book "Release It!"; I've
+done some work to add support for that as well. We've been running it in
+production for a year and it works well for our purposes.
+
+Please see the tests for details as to how to use it.
