@@ -138,6 +138,6 @@ public class TestCircuitBreaker {
     }
 
     private void doFailingOp() {
-        throw new RuntimeException("Simluate failing operation");
+        throw new RuntimeException("Simulate failing operation");
     }
 }
