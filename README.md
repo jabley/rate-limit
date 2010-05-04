@@ -17,20 +17,21 @@ rather than grinding to a halt.
 Each time a request comes in, we log the time. If it hasn't been a certain 
 duration since the last request, then abort with a rate-limiting error.
 
-key = create_key(request)
+    key = create_key(request)
+    
+    entry = gate.get_entry(key)
 
-entry = gate.get_entry(key)
+    if (entry)
+        response.set_status(SERVICE_UNAVAILABLE)
+        return
+    end
+    
+    entry = create_entry(expires => '5s')
+    
+    gate.put_entry(key, entry)
+    
+    ...
 
-if (entry)
-   response.set_status(SERVICE_UNAVAILABLE)
-   return
-end
-
-entry = create_entry(expires => '5s')
-
-gate.put_entry(key, entry)
-
-...
 
 ### Fixed Bucket
 
@@ -39,18 +40,18 @@ that time. Each time a request comes in, we look up the number of calls made
 in the current period. If it is at or above the limit, then abort with a 
 rate-limiting error, otherwise increment the counter and service the request.
 
-key = create_key(request)
+    key = create_key(request)
+    
+    entry = gate.get_entry(key)
+    
+    if (entry.count >= ALLOWED_PER_PERIOD)
+        response.set_status(SERVICE_UNAVAILABLE)
+        return
+    end
 
-entry = gate.get_entry(key)
-
-if (entry.count >= ALLOWED_PER_PERIOD)
-   response.set_status(SERVICE_UNAVAILABLE)
-   return
-end
-
-entry.count.increment()
-
-...
+    entry.count.increment()
+    
+    ...
 
 From this description, it can be seen that Next Service Slot is essentially 
 Fixed Bucket with a max size of 1 and an appropriate service period.
@@ -65,17 +66,17 @@ Hardest to implement, has the disadvantage that it will tie up a
 request-handling thread (which may cause upstream services to timeout / retry) 
 but may be a good solution in other contexts.
 
-key = create_key(request)
+    key = create_key(request)
+    
+    entry = gate.get_entry(key)
+    
+    if (entry.count >= ALLOWED_PER_PERIOD)
+        entry.wait()
+    end
 
-entry = gate.get_entry(key)
-
-if (entry.count >= ALLOWED_PER_PERIOD)
-   entry.wait()
-end
-
-entry.count.increment()
-
-...
+    entry.count.increment()
+    
+    ...
 
 ## CircuitBreaker
 
