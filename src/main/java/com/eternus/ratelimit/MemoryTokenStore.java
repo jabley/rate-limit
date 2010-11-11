@@ -61,7 +61,6 @@ public class MemoryTokenStore implements TokenStore {
     public StoreEntry get(Key key) {
 
         StoreEntry result;
-
         r.lock();
 
         try {
@@ -120,7 +119,7 @@ public class MemoryTokenStore implements TokenStore {
              * Remove the expired lock and signal to the client that they are the first one in the new period. Keep the
              * write lock in the expectation that the client will call create(Key, int),
              */
-            cache.put(key, null);
+            cache.remove(key);
             result = null;
         } else {
 

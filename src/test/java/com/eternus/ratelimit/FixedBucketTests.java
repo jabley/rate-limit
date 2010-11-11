@@ -129,6 +129,27 @@ public abstract class FixedBucketTests {
         }
     }
 
+    @Test
+    public void expiryOfTokensIsSupported() throws Exception {
+        FixedBucket rateLimiter = new FixedBucket();
+        int allowedRequests = 50;
+        rateLimiter.setAllowedRequests(allowedRequests);
+        rateLimiter.setTokenStore(createTokenStore());
+        rateLimiter.setDuration(1);
+        rateLimiter.init();
+
+        RateLimiterKey key = new RateLimiterKey();
+
+        Token token = rateLimiter.getToken(key);
+        assertTrue("We have a usable token back for the first request", token.isUsable());
+
+        // Allow the token to expire
+        Thread.sleep(1001);
+
+        token = rateLimiter.getToken(key);
+        assertTrue("We have a usable token back for the second request", token.isUsable());
+    }
+
     /**
      * Factory Method to return a {@link TokenStore} for test usage.
      * 
