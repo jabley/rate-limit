@@ -15,8 +15,6 @@
  */
 package com.eternus.ratelimit;
 
-import java.lang.ref.SoftReference;
-
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
@@ -35,7 +33,7 @@ public class MemoryTokenStore implements TokenStore {
     /**
      * The Map used to keep track of {@link StoreEntry} instances.
      */
-    private final Map<Key, SoftReference<StoreEntry>> cache;
+    private final Map<Key, StoreEntry> cache;
 
     /**
      * The {@link Lock} used to guard reads.
@@ -62,16 +60,12 @@ public class MemoryTokenStore implements TokenStore {
      */
     public StoreEntry get(Key key) {
 
-        StoreEntry result = null;
-        SoftReference<StoreEntry> ref = null;
+        StoreEntry result;
 
         r.lock();
 
         try {
-            ref = this.cache.get(key);
-            if (ref != null) {
-                result = ref.get();
-            }
+            result = this.cache.get(key);
         } finally {
             r.unlock();
         }
@@ -95,7 +89,7 @@ public class MemoryTokenStore implements TokenStore {
     public StoreEntry create(Key key, int timeToLive) {
         try {
             StoreEntryImpl entry = new StoreEntryImpl(timeToLive);
-            cache.put(key, new SoftReference<StoreEntry>(entry));
+            cache.put(key, entry);
             return entry;
         } finally {
             w.unlock();
@@ -115,8 +109,7 @@ public class MemoryTokenStore implements TokenStore {
     private StoreEntry checkPopulateThisPeriod(Key key) {
 
         /* Check the cache again in case it got updated by a different thread. */
-        SoftReference<StoreEntry> ref = this.cache.get(key);
-        StoreEntry result = (ref != null) ? ref.get() : null;
+        StoreEntry result = this.cache.get(key);
 
         if (result == null) {
 
