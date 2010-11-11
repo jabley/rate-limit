@@ -15,11 +15,14 @@
  */
 package com.eternus.ratelimit;
 
-import java.util.HashMap;
+import java.lang.ref.SoftReference;
+
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.google.common.collect.MapMaker;
 
 /**
  * {@link TokenStore} implementation that is purely in-memory.
@@ -32,7 +35,7 @@ public class MemoryTokenStore implements TokenStore {
     /**
      * The Map used to keep track of {@link StoreEntry} instances.
      */
-    private final Map<Key, StoreEntry> cache;
+    private final Map<Key, SoftReference<StoreEntry>> cache;
 
     /**
      * The {@link Lock} used to guard reads.
@@ -48,7 +51,7 @@ public class MemoryTokenStore implements TokenStore {
      * Creates a new {@link MemoryTokenStore}.
      */
     public MemoryTokenStore() {
-        this.cache = new HashMap<Key, StoreEntry>();
+        this.cache = new MapMaker().softValues().expiration(120, TimeUnit.SECONDS).makeMap();
         ReadWriteLock lock = new ReentrantReadWriteLock();
         this.r = lock.readLock();
         this.w = lock.writeLock();
@@ -59,11 +62,16 @@ public class MemoryTokenStore implements TokenStore {
      */
     public StoreEntry get(Key key) {
 
-        StoreEntry result;
+        StoreEntry result = null;
+        SoftReference<StoreEntry> ref = null;
+
         r.lock();
 
         try {
-            result = this.cache.get(key);
+            ref = this.cache.get(key);
+            if (ref != null) {
+                result = ref.get();
+            }
         } finally {
             r.unlock();
         }
@@ -87,7 +95,7 @@ public class MemoryTokenStore implements TokenStore {
     public StoreEntry create(Key key, int timeToLive) {
         try {
             StoreEntryImpl entry = new StoreEntryImpl(timeToLive);
-            cache.put(key, entry);
+            cache.put(key, new SoftReference<StoreEntry>(entry));
             return entry;
         } finally {
             w.unlock();
@@ -107,7 +115,8 @@ public class MemoryTokenStore implements TokenStore {
     private StoreEntry checkPopulateThisPeriod(Key key) {
 
         /* Check the cache again in case it got updated by a different thread. */
-        StoreEntry result = this.cache.get(key);
+        SoftReference<StoreEntry> ref = this.cache.get(key);
+        StoreEntry result = (ref != null) ? ref.get() : null;
 
         if (result == null) {
 

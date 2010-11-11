@@ -15,5 +15,6 @@
         <exclude module="servlet" />
         <exclude module="hibernate" />
     </dependency>
+    <dependency org="com.google.guava" name="guava" rev="r07" conf="default->*;test->default"/>
   </dependencies>
 </ivy-module>
