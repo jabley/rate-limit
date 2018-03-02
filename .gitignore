@@ -6,3 +6,5 @@ dist
 ivy/ivy.jar
 target
 
+build/
+.gradle/

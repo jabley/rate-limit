@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.owasp.dependencycheck' version "3.1.1"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'net.sf.ehcache:ehcache:1.5.0'
+    compile 'com.google.guava:guava:r07'
+    testCompile 'junit:junit:4.5'
+}
+
+def versionString = "1.2.3-SNAPSHOT"
+
+jar {
+    version = versionString
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    version = versionString
+    from sourceSets.main.allSource
+}
+
+assemble.dependsOn sourcesJar
